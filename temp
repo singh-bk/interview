@@ -1,0 +1,13 @@
+		AnnotationConfigWebApplicationContext parent = new AnnotationConfigWebApplicationContext();
+		parent.refresh();
+        parent.getBeanFactory().registerSingleton("configuration", configuration);
+        parent.registerShutdownHook();
+        parent.start();
+		
+        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.setParent(parent);
+		ctx.register(SpringConfiguration.class);
+		ctx.refresh();
+		ctx.start();
+		environment.servlets().addServletListeners(
+				new SpringContextLoaderListener(ctx));
